@@ -1,5 +1,5 @@
 # Alpine Linux-based, tiny Node container:
-FROM node:18-alpine as base
+FROM node:18-alpine AS base
 
 ADD ./ /opt/app
 WORKDIR /opt/app
@@ -12,10 +12,11 @@ RUN rm -rf node_modules \
 USER node
 
 
-FROM base as release
+FROM base AS release
 
 USER root
 RUN npm install --only=production \
+ && chmod +x ./shell/run-db-migration.sh ./shell/wait-for.sh ./shell/start-dev.sh \
  #&& apk add --no-cache tini \
  && chown -R node /opt/app
 
@@ -24,11 +25,10 @@ ENV HOME_DIR=/opt/app \
     NODE_ENV=production \
     PORT=5501
 
-ENTRYPOINT ./shell/run-db-migraton.sh && node server.js
+ENTRYPOINT ["/bin/sh", "-c", "./shell/run-db-migraton.sh && node server.js"]
 
 
-
-FROM base as build
+FROM base AS build
 
 USER root
 RUN npm install -g nodemon \
