@@ -24,7 +24,7 @@ services:
     # command: nodemon -e js,coffee,jade,handlebars server.js
     # @see: https://docs.docker.com/compose/startup-order/
     # command: ["./shell/wait-for.sh", "ms-nodebootstrap-example-db:3306", "--", "./shell/start-dev.sh"]
-    command: ./shell/wait-for.sh ms-nodebootstrap-example-db:3306 -- ./shell/start-dev.sh
+    command: /bin/sh -c "chmod +x ./shell/wait-for.sh ./shell/start-dev.sh && ./shell/wait-for.sh ms-nodebootstrap-example-db:3306 -- ./shell/start-dev.sh"
     depends_on:
       ms-nodebootstrap-example-db:
         condition: service_healthy
