@@ -16,7 +16,7 @@ FROM base AS release
 
 USER root
 RUN npm install --only=production \
- && chmod +x ./shell/run-db-migration.sh ./shell/wait-for.sh ./shell/start-dev.sh \
+ && chmod +x ./shell/run-db-migraton.sh ./shell/wait-for.sh ./shell/start-dev.sh \
  #&& apk add --no-cache tini \
  && chown -R node /opt/app
 
@@ -33,6 +33,7 @@ FROM base AS build
 USER root
 RUN npm install -g nodemon \
  && npm install \
+ && chmod +x ./shell/run-db-migraton.sh ./shell/wait-for.sh ./shell/start-dev.sh \
  && chown -R node /opt/app
 
 USER node
