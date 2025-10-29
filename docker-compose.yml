@@ -1,6 +1,6 @@
 services:
-  ms-nodebootstrap-example:
-    container_name: ms-nodebootstrap-example
+  ms-flights:
+    container_name: ms-flights
     user: root # avoids ton of volume mounting headaches in dev mode.
     build:
       context: .
@@ -14,7 +14,7 @@ services:
     env_file:
       - ./database.env
     links:
-      - ms-nodebootstrap-example-db
+      - ms-flights-db
     environment:
       - NODE_ENV=dev
       - NODE_HOT_RELOAD=1
@@ -23,14 +23,14 @@ services:
       #- PORT=5501 # this is overriden in shell/start-dev.sh since wait-for.sh compromises it from here
     # command: nodemon -e js,coffee,jade,handlebars server.js
     # @see: https://docs.docker.com/compose/startup-order/
-    # command: ["./shell/wait-for.sh", "ms-nodebootstrap-example-db:3306", "--", "./shell/start-dev.sh"]
-    command: /bin/sh -c "chmod +x ./shell/wait-for.sh ./shell/start-dev.sh && ./shell/wait-for.sh ms-nodebootstrap-example-db:3306 -- ./shell/start-dev.sh"
+    # command: ["./shell/wait-for.sh", "ms-flights-db:3306", "--", "./shell/start-dev.sh"]
+    command: /bin/sh -c "chmod +x ./shell/wait-for.sh ./shell/start-dev.sh && ./shell/wait-for.sh ms-flights-db:3306 -- ./shell/start-dev.sh"
     depends_on:
-      ms-nodebootstrap-example-db:
+      ms-flights-db:
         condition: service_healthy
 
-  ms-nodebootstrap-example-db:
-    container_name: ms-nodebootstrap-example-db
+  ms-flights-db:
+    container_name: ms-flights-db
     image: mysql:8
     # port mapping not needed for the app, but convenient in debugging
     # to use some GUI tool (e.g. SequelPro) against the DB, on the host
@@ -47,8 +47,8 @@ services:
     env_file:
       - ./database.env
     volumes:
-      - ms_nb_example_db_data:/var/lib/mysql
+      - ms_flights_db_vol:/var/lib/mysql
     restart: always
 
 volumes:
-  ms_nb_example_db_data:
+  ms_flights_db_vol:

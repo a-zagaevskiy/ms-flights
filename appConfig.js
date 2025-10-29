@@ -21,8 +21,7 @@ function serviceRoutes(app) {
 
   /* eslint-disable global-require */
 
-  app.use('/',      require('homedoc')); // attach to root route
-  app.use('/users', require('users')); // attach to sub-route
+  app.use('/flights', require('flights')); // attach to sub-route
 
   /* eslint-enable global-require */
 }
