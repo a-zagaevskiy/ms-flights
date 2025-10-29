@@ -18,8 +18,10 @@ describe('users model', () => {
 
   after( async () => {
     const db = require("datastore");
-    const conn = await db.conn();
-    conn.end();
+    const pool = db.conn();
+    if (pool) {
+      await pool.end();
+    }
   });
 
 });
